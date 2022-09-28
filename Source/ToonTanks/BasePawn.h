@@ -20,19 +20,21 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent *turretMesh;
+		UStaticMeshComponent* turretMesh;
+
+	void RotateTurret(FVector LookAtTarget);
 
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
-	class UCapsuleComponent *capsuleComponent;
+		class UCapsuleComponent* capsuleComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent *baseMesh;
+		UStaticMeshComponent* baseMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
-	USceneComponent *projectileSpawnPoint;
-	
+		USceneComponent* projectileSpawnPoint;
+
 
 public:
 	// Called every frame

@@ -16,20 +16,27 @@ class TOONTANKS_API ATank : public ABasePawn
 public:
 	ATank();
 
-	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent *cameraComponent;
+		class UCameraComponent* cameraComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent *springArmComponent;
+		class USpringArmComponent* springArmComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float speedMove = 200;
+		float speedMove = 200;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float speedTurn = 100;
+		float speedTurn = 100;
+
+	APlayerController* playerController;
 
 	void Move(float Value);
 	void Turn(float Value);
