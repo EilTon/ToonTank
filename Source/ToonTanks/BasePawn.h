@@ -19,26 +19,25 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent *turretMesh;
+
+
 private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
+	class UCapsuleComponent *capsuleComponent;
 
-	UPROPERTY()
-		class UCapsuleComponent* capsuleComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent *baseMesh;
 
-	UPROPERTY()
-		UStaticMeshComponent* baseMesh;
-
-	UPROPERTY()
-		UStaticMeshComponent* turretMesh;
-
-	UPROPERTY(EditAnywhere)
-		USceneComponent* projectileSpawnPoint;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
+	USceneComponent *projectileSpawnPoint;
+	
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 };
