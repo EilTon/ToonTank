@@ -24,6 +24,8 @@ protected:
 
 	void RotateTurret(FVector LookAtTarget);
 
+	void Fire();
+
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
@@ -34,6 +36,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
 		USceneComponent* projectileSpawnPoint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
+		TSubclassOf<class AProjectile> projectileClass;
 
 
 public:
