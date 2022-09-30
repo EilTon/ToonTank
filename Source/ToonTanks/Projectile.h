@@ -10,8 +10,8 @@ UCLASS()
 class TOONTANKS_API AProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AProjectile();
 
@@ -21,13 +21,18 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
-		UStaticMeshComponent* meshComponent;
+	UStaticMeshComponent *meshComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
-		class UProjectileMovementComponent* projetileMovement;
+	class UProjectileMovementComponent *projetileMovement;
+	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent *HitComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit);
 
-public:	
+	UPROPERTY(EditAnywhere)
+	float damage = 50;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };
