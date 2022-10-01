@@ -40,4 +40,5 @@ void AProjectile::OnHit(UPrimitiveComponent *HitComp, AActor *OtherActor, UPrimi
 			UGameplayStatics::ApplyDamage(OtherActor, damage, ownerInstigator, this, damageTypeClass);
 		}
 	}
+	Destroy();
 }

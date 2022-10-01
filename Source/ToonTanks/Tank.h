@@ -20,6 +20,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void HandleDestruction();
+	APlayerController* GetPlayerController() const{return playerController;};
+
 protected:
 	virtual void BeginPlay() override;
 
