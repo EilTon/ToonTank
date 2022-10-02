@@ -21,16 +21,31 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent *meshComponent;
+		UStaticMeshComponent* meshComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
-	class UProjectileMovementComponent *projetileMovement;
-	
+		class UProjectileMovementComponent* projetileMovement;
+
 	UFUNCTION()
-	void OnHit(UPrimitiveComponent *HitComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit);
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UPROPERTY(EditAnywhere)
-	float damage = 50;
+		float damage = 50;
+
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* HitParticle;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
+		class UParticleSystemComponent* particleTrailComponent;
+
+	UPROPERTY(EditAnywhere)
+		class USoundBase* LaunchSound;
+
+	UPROPERTY(EditAnywhere)
+		class USoundBase* HitSound;
+
+
+	
 
 public:
 	// Called every frame

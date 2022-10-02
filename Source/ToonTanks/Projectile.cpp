@@ -4,6 +4,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -12,7 +14,10 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
 	projetileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+	particleTrailComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle Trail Component"));
+
 	RootComponent = meshComponent;
+	particleTrailComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -20,6 +25,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	meshComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
 }
 
 // Called every frame
@@ -28,16 +34,18 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AProjectile::OnHit(UPrimitiveComponent *HitComp, AActor *OtherActor, UPrimitiveComponent *OtherComp, FVector NormalImpulse, const FHitResult &Hit)
+void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	auto owner = GetOwner();
+	AActor* owner = GetOwner();
 	if (owner != nullptr)
 	{
-		auto ownerInstigator = owner->GetInstigatorController();
-		auto damageTypeClass = UDamageType::StaticClass();
+		AController* ownerInstigator = owner->GetInstigatorController();
+		UClass* damageTypeClass = UDamageType::StaticClass();
 		if (OtherActor && OtherActor != this && OtherActor != owner)
 		{
 			UGameplayStatics::ApplyDamage(OtherActor, damage, ownerInstigator, this, damageTypeClass);
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation(), GetActorRotation());
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
 		}
 	}
 	Destroy();

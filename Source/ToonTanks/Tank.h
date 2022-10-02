@@ -20,6 +20,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	bool TankAlive = true;
+
 	void HandleDestruction();
 	APlayerController* GetPlayerController() const{return playerController;};
 

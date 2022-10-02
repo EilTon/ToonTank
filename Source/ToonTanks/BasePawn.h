@@ -42,6 +42,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Base Pawn", meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<class AProjectile> projectileClass;
 
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* deathParticle;
+
+	UPROPERTY(EditAnywhere)
+		class USoundBase* deathSound;
+
 
 public:
 	// Called every frame

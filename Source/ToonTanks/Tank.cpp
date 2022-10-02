@@ -28,7 +28,6 @@ void ATank::Tick(float DeltaTime)
 	{
 		FHitResult hitResult;
 		playerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, hitResult);
-		DrawDebugSphere(GetWorld(), hitResult.ImpactPoint, 100, 12, FColor::Red, false, -1);
 		RotateTurret(hitResult.ImpactPoint);
 	}
 }
@@ -60,5 +59,6 @@ void ATank::HandleDestruction()
 	Super::HandleDestruction();
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
+	TankAlive = false;
 
 }
