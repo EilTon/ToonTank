@@ -4,33 +4,61 @@
 #include "Kismet/GameplayStatics.h"
 #include "Tank.h"
 #include "Tower.h"
+#include "ToonTankPlayerController.h"
+#include "TimerManager.h"
 
 void AToonTanksGameMode::BeginPlay()
 {
-    Super::BeginPlay();
-    Tank = (ATank *)UGameplayStatics::GetPlayerPawn(this, 0);
+	Super::BeginPlay();
+	HandleGameStart();
+
 }
 
-void AToonTanksGameMode::ActorDied(AActor *DeadActor)
+void AToonTanksGameMode::HandleGameStart()
 {
-    if (DeadActor == Tank)
-    {
-        Tank->HandleDestruction();
-        if (Tank->GetPlayerController())
-        {
-            Tank->DisableInput(Tank->GetPlayerController());
-            Tank->GetPlayerController()->bShowMouseCursor = false;
-        }
-    }
+	NumberOfTowersRemain = GetAllTowers();
+	Tank = (ATank*)UGameplayStatics::GetPlayerPawn(this, 0);
+	ToonTankPlayerController = (AToonTankPlayerController*)UGameplayStatics::GetPlayerController(this, 0);
+	StartGame();
+	if (ToonTankPlayerController)
+	{
+		ToonTankPlayerController->SetPlayerEnableState(false);
+		FTimerHandle PlayerEnableTimerHandle;
+		FTimerDelegate PlayerEnableTimerDelegate = FTimerDelegate::CreateUObject(ToonTankPlayerController, &AToonTankPlayerController::SetPlayerEnableState, true);
+		GetWorldTimerManager().SetTimer(PlayerEnableTimerHandle, PlayerEnableTimerDelegate, StartDelay, false);
+	}
+}
 
-    else
-    {
-        Tower = (ATower *)DeadActor;
-        UE_LOG(LogTemp, Warning, TEXT("BeforeNullPTr"));
-        if (Tower != nullptr)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("AfterNullPTr"));
-            Tower->HandleDestruction();
-        }
-    }
+int32 AToonTanksGameMode::GetAllTowers()
+{
+	TArray<AActor*> Towers;
+	 UGameplayStatics::GetAllActorsOfClass(this, ATower::StaticClass(), Towers);
+	 return Towers.Num();
+}
+
+void AToonTanksGameMode::ActorDied(AActor* DeadActor)
+{
+	if (DeadActor == Tank)
+	{
+		Tank->HandleDestruction();
+		if (ToonTankPlayerController)
+		{
+			ToonTankPlayerController->SetPlayerEnableState(false);
+		}
+		GameOver(false);
+	}
+
+	else
+	{
+		Tower = (ATower*)DeadActor;
+		if (Tower != nullptr)
+		{
+			Tower->HandleDestruction();
+			--NumberOfTowersRemain;
+			if (NumberOfTowersRemain <= 0)
+			{
+				GameOver(true);
+			}
+		}
+	}
 }
